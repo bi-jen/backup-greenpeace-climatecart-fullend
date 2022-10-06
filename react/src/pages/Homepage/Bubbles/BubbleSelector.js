@@ -181,9 +181,16 @@ const Bubble = ({
         }
     }, [])
 
+    const imageSrc = useMemo(() => {
+        if (image.indexOf('http://') === 0 || image.indexOf('https://') === 0) {
+            return image;
+        }
+        return process.env.REACT_APP_STRAPI_URL + image;
+    }, [image])
+
     return (
         <StyledBubble ref={domRef}
-            image={process.env.REACT_APP_STRAPI_URL + image} x={x} y={y} size={size}
+            image={imageSrc} x={x} y={y} size={size}
             disabled={disabled} checked={checked} onClick={onClick}
         >
             <div>{name}</div>

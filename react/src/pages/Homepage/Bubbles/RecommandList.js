@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -44,16 +45,26 @@ const RecommandList = ({ products = [], topics = [] }) => {
     )
 }
 
-const TopicItem = ({ topic }) => (
-    <StyledTopicItem image={topic.attributes.banner_image.data.attributes.url}>
-        <LinkWrapper to={`/topics/${topic.id}`}>
-            <span>
-                { topic.attributes.name }
-                <Icons.Arrow />
-            </span>
-        </LinkWrapper>
-    </StyledTopicItem>
-)
+const TopicItem = ({ topic }) => {
+    const imageSrc = useMemo(() => {
+        const image = topic.attributes.banner_image.data.attributes.url;
+        if (image.indexOf('http://') === 0 || image.indexOf('https://') === 0) {
+            return image;
+        }
+        return process.env.REACT_APP_STRAPI_URL + image;
+    }, [topic])
+
+    return (
+        <StyledTopicItem image={imageSrc}>
+            <LinkWrapper to={`/topics/${topic.id}`}>
+                <span>
+                    { topic.attributes.name }
+                    <Icons.Arrow />
+                </span>
+            </LinkWrapper>
+        </StyledTopicItem>
+    )
+}
 
 const MobileSlider = props => {
 
@@ -168,7 +179,7 @@ const StyledTopicItem = styled.li`
 
     ${({ image }) => image && css`
         &::before, &::after {
-            background-image: url(${process.env.REACT_APP_STRAPI_URL + image});
+            background-image: url(${image});
             background-size: 110%;
         }
     `}

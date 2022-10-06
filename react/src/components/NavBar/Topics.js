@@ -6,6 +6,7 @@ import shallow from 'zustand/shallow';
 import { useBearStore } from '../../stores/cartStore.js';
 import { hoverEffect } from './hoverEffect.js';
 import LinkWrapper from '../LinkWrapper';
+import Image from '../Image';
 
 const Topics = () => {
 
@@ -65,7 +66,7 @@ const Topics = () => {
 const ProductItem = ({ id, name, image, onClick }) => (
     <StyledProductItem>
         <LinkWrapper to={`/product/${id}`} onClick={onClick} >
-            <img src={process.env.REACT_APP_STRAPI_URL + image} alt={name} />
+            <Image src={image} alt={name} />
             <h4>{name}</h4>
         </LinkWrapper>
     </StyledProductItem>

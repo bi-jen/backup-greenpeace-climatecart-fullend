@@ -57,11 +57,11 @@ const VoteForClimate = () => {
                         <SliderItem key={index}>
                             <div className="image-container">
                                 <Image src={item.image} alt={item.name} />
-                                <div className="content">「{item.content}」</div>
+                                <div className="content" dangerouslySetInnerHTML={{ __html: item.content}}></div>
                             </div>
                             <div>
                                 <span className="name">{item.name}</span>｜<span>{item.title}</span>
-                                <div className="mobile-content">「{item.content}」</div>
+                                <div className="mobile-content" dangerouslySetInnerHTML={{ __html: item.content}}></div>
                             </div>
                         </SliderItem>
                     )}
@@ -143,19 +143,6 @@ const SliderItem = styled.div`
         margin-right: 0;
     }
 
-    .mobile-content {
-        display: none;
-        
-        ${respondTo.lg} {
-            display: block;
-
-            font-size: 14px;
-            line-height: 20px;
-            margin-top: 12px;
-        }
-    }
-
-
     .image-container {
         position: relative;
     }
@@ -193,6 +180,18 @@ const SliderItem = styled.div`
 
         ${respondTo.lg} {
             display: none;
+        }
+    }
+
+    .mobile-content {
+        display: none;
+        
+        ${respondTo.lg} {
+            display: block;
+
+            font-size: 14px;
+            line-height: 20px;
+            margin-top: 12px;
         }
     }
 

@@ -102,9 +102,14 @@ const ResultImageCanvas = ({
                 const productId = defaultLayout?.[i] ?? shuffledProductIds[i % productIds.length];
 
                 if (!productId) return;
-                const textureUrl = process.env.REACT_APP_STRAPI_URL + (
+
+                let textureUrl = (
                     products[productId]?.attributes.image?.data.attributes.formats.thumbnail?.url ?? products[productId]?.attributes.image?.data.attributes.url
                 );
+
+                if (textureUrl.indexOf('http://') !== 0 && textureUrl.indexOf('https://') !== 0) {
+                    textureUrl = process.env.REACT_APP_STRAPI_URL + textureUrl
+                }
 
                 two.makeTexture(textureUrl, () => {
                     const sprite = two.makeSprite(textureUrl);
@@ -116,14 +121,14 @@ const ResultImageCanvas = ({
                         gsap.fromTo(sprite, {
                             scale: 0,
                         }, {
-                            scale: 124.41 / sprite.width * pixelRatio, 
+                            scale: 124.41 / sprite.width * pixelRatio * 1.2, 
                             duration: 0.3, 
                             delay: Math.random() * 0.3,
                             ease: Back.easeOut
                         });
                     } 
                     else {
-                        sprite.scale = 124.41 / sprite.width * pixelRatio;
+                        sprite.scale = 124.41 / sprite.width * pixelRatio * 1.2;
                     }
                     
                     itemsGroup.add(sprite);
@@ -275,7 +280,7 @@ const ResultImageCanvas = ({
 
 const StyledResultImage = styled.div`
     /* width: min(375px, 100vw - 48px); */
-    height: max(min(100vh - 460px, 667px), 200px);
+    height: max(min(var(--vh) * 100 - 460px, 667px), 200px);
     aspect-ratio: 1 / 1.775;
 
     display: flex;
